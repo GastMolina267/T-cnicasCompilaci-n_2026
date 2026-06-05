@@ -139,11 +139,12 @@ La optimización busca mejorar la eficiencia en tamaño y rendimiento del códig
     1.  **Plegado de Constantes (Constant Folding)**: Evalúa expresiones cuyos operandos son todos constantes conocidas en tiempo de compilación. Por ejemplo, `t1 = 10 * 2` se reescribe como `t1 = 20`. Soporta aritmética elemental, lógica booleana y comparaciones relacionales.
     2.  **Propagación de Constantes (Constant Propagation)**: Si se asigna un literal constante a una variable (ej. `x = 5`), las apariciones futuras de esa variable se reemplazan por el literal constante en las expresiones.
         *   *Seguridad ante saltos*: La propagación directa de constantes puede inducir a optimizaciones erróneas si la variable cambia su flujo proveniente de un salto condicional o bucle. Para evitar este problema de forma simple y robusta, el optimizador limpia completamente el mapa de constantes (`constMap.clear()`) cada vez que encuentra una etiqueta (`LABEL` o `FUNC_START`), confinando la propagación al bloque plano básico actual.
-    3.  **Simplificación Algebraica**: Simplifica operaciones con elementos neutros y nulos matemáticos:
+    3.  **Simplificación Algebraica y Reducción de Fuerza**: Simplifica operaciones con elementos neutros y nulos matemáticos, y reemplaza operaciones de alto costo computacional por alternativas más eficientes:
         *   Suma con cero: `x + 0` o `0 + x` $\rightarrow$ `x`
         *   Resta con cero: `x - 0` $\rightarrow$ `x`
         *   Multiplicación por uno: `x * 1` o `1 * x` $\rightarrow$ `x`
         *   Multiplicación por cero: `x * 0` o `0 * x` $\rightarrow$ `0`
+        *   Reducción de Fuerza: Multiplicación por dos `x * 2` o `2 * x` $\rightarrow$ `x + x` (operación de suma más veloz a nivel de hardware)
     4.  **Eliminación de Código Muerto**:
         *   *Código Inalcanzable*: Al detectar una sentencia de salto incondicional (`GOTO` o `RETURN`), el optimizador marca las instrucciones subsecuentes como inactivas y las descarta hasta encontrar la siguiente etiqueta (`LABEL` o `FUNC_START`), ya que físicamente no hay flujo de ejecución que pueda alcanzarlas.
         *   *Redundancias y Temporales Huérfanos*: Cuenta las referencias de lectura de los temporales artificiales (`t1`, `t2`, ...). Si un temporal es asignado pero su valor se propagó o plegó y ya no se lee en ninguna otra instrucción del programa, la asignación completa se elimina de la lista final. Las llamadas a funciones (`CALL`) no se descartan por tener potenciales efectos secundarios, pero se elimina la variable temporal que capturaba su retorno si no se usa.
