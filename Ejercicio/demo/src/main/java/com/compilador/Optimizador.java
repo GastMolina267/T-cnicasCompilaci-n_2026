@@ -7,7 +7,22 @@ import java.util.Map;
 
 public class Optimizador {
 
+    // Métricas globales de optimización
+    public static int constantFoldings = 0;
+    public static int constantPropagations = 0;
+    public static int algebraicSimplifications = 0;
+    public static int strengthReductions = 0;
+    public static int unreachableInstructions = 0;
+    public static int deadAssignments = 0;
+
     public static List<Instruccion> optimizar(List<Instruccion> original) {
+        // Reiniciar contadores para cada ejecución
+        constantFoldings = 0;
+        constantPropagations = 0;
+        algebraicSimplifications = 0;
+        strengthReductions = 0;
+        unreachableInstructions = 0;
+        deadAssignments = 0;
         List<Instruccion> current = new ArrayList<>();
         // Copiar la lista para evitar modificar la original
         for (Instruccion inst : original) {
@@ -171,9 +186,11 @@ public class Optimizador {
             String arg2 = inst.getArg2();
             if (constMap.containsKey(arg1)) {
                 arg1 = constMap.get(arg1);
+                constantPropagations++;
             }
             if (constMap.containsKey(arg2)) {
                 arg2 = constMap.get(arg2);
+                constantPropagations++;
             }
 
             Instruccion propagated = new Instruccion(op, arg1, arg2, inst.getResult());
@@ -187,6 +204,7 @@ public class Optimizador {
                     propagated.setArg1(foldedVal);
                     propagated.setArg2("");
                     folded = true;
+                    constantFoldings++;
                 }
             } else if (isUnaryOp(op)) {
                 String foldedVal = evaluateUnary(op, arg1);
@@ -195,6 +213,7 @@ public class Optimizador {
                     propagated.setArg1(foldedVal);
                     propagated.setArg2("");
                     folded = true;
+                    constantFoldings++;
                 }
             }
 
@@ -205,38 +224,46 @@ public class Optimizador {
                         propagated.setOp("=");
                         propagated.setArg1(arg2);
                         propagated.setArg2("");
+                        algebraicSimplifications++;
                     } else if (arg2.equals("0")) {
                         propagated.setOp("=");
                         propagated.setArg1(arg1);
                         propagated.setArg2("");
+                        algebraicSimplifications++;
                     }
                 } else if (op.equals("-")) {
                     if (arg2.equals("0")) {
                         propagated.setOp("=");
                         propagated.setArg1(arg1);
                         propagated.setArg2("");
+                        algebraicSimplifications++;
                     }
                 } else if (op.equals("*")) {
                     if (arg1.equals("1")) {
                         propagated.setOp("=");
                         propagated.setArg1(arg2);
                         propagated.setArg2("");
+                        algebraicSimplifications++;
                     } else if (arg2.equals("1")) {
                         propagated.setOp("=");
                         propagated.setArg1(arg1);
                         propagated.setArg2("");
+                        algebraicSimplifications++;
                     } else if (arg1.equals("0") || arg2.equals("0")) {
                         propagated.setOp("=");
                         propagated.setArg1("0");
                         propagated.setArg2("");
+                        algebraicSimplifications++;
                     } else if (arg1.equals("2")) {
                         propagated.setOp("+");
                         propagated.setArg1(arg2);
                         propagated.setArg2(arg2);
+                        strengthReductions++;
                     } else if (arg2.equals("2")) {
                         propagated.setOp("+");
                         propagated.setArg1(arg1);
                         propagated.setArg2(arg1);
+                        strengthReductions++;
                     }
                 }
             }
@@ -271,6 +298,8 @@ public class Optimizador {
 
             if (!unreachable) {
                 resultList.add(inst);
+            } else {
+                unreachableInstructions++;
             }
 
             if (op.equals("GOTO") || op.equals("RETURN")) {
@@ -282,6 +311,7 @@ public class Optimizador {
         List<Instruccion> cleanAssignments = new ArrayList<>();
         for (Instruccion inst : resultList) {
             if (inst.getOp().equals("=") && inst.getResult().equals(inst.getArg1())) {
+                deadAssignments++;
                 continue;
             }
             cleanAssignments.add(inst);
@@ -313,10 +343,12 @@ public class Optimizador {
                 if (!refCounts.containsKey(res) || refCounts.get(res) == 0) {
                     // Asegurar que no sea una llamada CALL con efectos secundarios
                     if (!inst.getOp().equals("CALL")) {
+                        deadAssignments++;
                         continue;
                     } else {
                         // Si es llamada, mantenerla pero quitar asignación
                         inst.setResult("");
+                        deadAssignments++;
                     }
                 }
             }

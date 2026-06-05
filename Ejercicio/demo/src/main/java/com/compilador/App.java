@@ -221,7 +221,16 @@ public class App {
             System.out.printf("   📊 Instrucciones optimizadas: %d\n", nonCommentLinesOptimized);
             System.out.printf("   📊 Instrucciones eliminadas: %d\n", diff);
             System.out.printf("   📊 Reducción de código: %.2f%%\n", reductionPercent);
-            System.out.println(GREEN + "✅ Código optimizado guardado en: " + fileOptimizado + RESET);
+            
+            System.out.println(CYAN + "\n   🔧 Desglose de optimizaciones aplicadas:" + RESET);
+            System.out.printf("      🔹 Plegados de constantes (Folding): %d\n", Optimizador.constantFoldings);
+            System.out.printf("      🔹 Propagaciones de constantes: %d\n", Optimizador.constantPropagations);
+            System.out.printf("      🔹 Simplificaciones algebraicas: %d\n", Optimizador.algebraicSimplifications);
+            System.out.printf("      🔹 Reducciones de fuerza (Multiplicaciones * 2 -> Sumas): %d\n", Optimizador.strengthReductions);
+            System.out.printf("      🔹 Instrucciones de código inalcanzable eliminadas: %d\n", Optimizador.unreachableInstructions);
+            System.out.printf("      🔹 Asignaciones redundantes / temporales huérfanos eliminados: %d\n", Optimizador.deadAssignments);
+            
+            System.out.println(GREEN + "\n✅ Código optimizado guardado en: " + fileOptimizado + RESET);
 
             // 7. RESUMEN DE COMPILACIÓN
             System.out.println("\n=== 7. RESUMEN DE COMPILACIÓN ===");
