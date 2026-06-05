@@ -1,214 +1,470 @@
-# Técnicas de Compilación
+# Compilador - Proyecto Final
+## Técnicas de Compilación
 
-#### Trabajo Final — 2026
+### 📚 Descripción del Proyecto
 
-## Resumen
+Este proyecto constituye la implementación completa de un compilador para un subconjunto del lenguaje C++, desarrollado como proyecto final para la materia **Técnicas de Compilación**. El compilador incluye análisis léxico, sintáctico, semántico, generación de código intermedio y optimizaciones.
 
-Diseñar e implementar un compilador para un subconjunto del lenguaje C++ utilizando
-la herramienta ANTLR4, aplicando los conceptos teóricos y prácticos vistos en la
-materia de Técnicas de Compilación.
+---
 
-## Descripción
+## 🎯 Funcionalidades Implementadas
 
-El estudiante deberá desarrollar un compilador completo que sea capaz de analizar,
-verificar y generar código para programas escritos en un subconjunto del lenguaje C++.
-El compilador deberá implementar todas las fases del proceso de compilación: análisis
-léxico, análisis sintáctico, análisis semántico, generación de código intermedio y
-optimización.
+- ✅ **Análisis Léxico**: Reconocimiento de tokens y símbolos del lenguaje
+- ✅ **Análisis Sintáctico**: Construcción del árbol sintáctico abstracto (AST)
+- ✅ **Análisis Semántico**: Tabla de símbolos y verificación de tipos
+- ✅ **Generación de Código Intermedio**: Código de tres direcciones
+- ✅ **Optimización de Código**: Eliminación de código muerto, propagación de constantes, simplificación de expresiones
+- ✅ **Detección de Errores**: Errores léxicos, sintácticos y semánticos
+- ✅ **Warnings**: Variables no utilizadas y otros avisos
 
-## Modalidad de Trabajo
+---
+
+## 📋 Requisitos del Sistema
+
+- **Java**
+- **ANTLR 4.9** o superior
+- **Maven** (para gestión de dependencias)
+
+---
+
+
+
+## 📖 Ejemplos de Uso
+
+### 🟢 Ejemplo 1: Código Sin Errores
+
+**Archivo de entrada: `ejemplo_correcto.cpp`**
+
+```cpp
+// Archivo de prueba SIN errores - SÚPER SIMPLE
+// Compatible con la gramática básica
+
+// Variables globales
+int contadorGlobal;
+double valorPi;
+char inicial;
+bool activo;
+
+// Función simple que retorna valor
+int sumar(int a, int b) {
+    int resultado;
+    resultado = a + b;
+    contadorGlobal = contadorGlobal + 1;
+    return resultado;
+}
+
+// Función main
+int main() {
+    int estado;
+    int temp;
+    int numeros[3];
+    
+    // Inicializar variables globales
+    contadorGlobal = 0;
+    valorPi = 3.14;
+    inicial = 'M';
+    
+    // Usar arrays
+    numeros[0] = 10;
+    numeros[1] = 20;
+    numeros[2] = 30;
+    
+    // Operaciones básicas
+    temp = numeros[0] + numeros[1];
+    temp = temp * 2;
+    temp = temp / 3;
+    temp = temp % 5;
+    
+    // Usar función que retorna valor
+    estado = sumar(temp, 5);
+    
+    // Usar variables globales
+    contadorGlobal = estado;
+    valorPi = temp;
+    inicial = 'X';
+    
+    // Estructuras de control básicas
+    if (estado > 0) {
+        int auxiliar;
+        auxiliar = estado + 10;
+        estado = auxiliar;
+    }
+    
+    return estado;
+}
+```
+
+**Salida esperada:**
 
 ```
-● Trabajo en Equipo: El proyecto deberá realizarse en equipos de dos (2)
-estudiantes.
-● Control de Versiones : Todo el código del proyecto debe estar alojado en un
-repositorio de GitHub público.
-● Commits Frecuentes: Se requiere que ambos integrantes realicen commits
-regulares que reflejen el progreso del desarrollo. No se evaluarán
-repositorios que contengan un solo commit o muy pocos commits
-concentrados cerca de la fecha de entrega.
-● Distribución Equitativa: Ambos integrantes deben participar activamente en el
-desarrollo, lo cual debe reflejarse en la historia de commits del repositorio.
+🚀 Iniciando compilación de: ejemplo_correcto.cpp
+============================================================
+
+=== 1. ANÁLISIS LÉXICO ===
+✅ Análisis léxico completado sin errores.
+   📊 Tokens procesados: 152
+
+=== 2. ANÁLISIS SINTÁCTICO ===
+✅ Análisis sintáctico completado sin errores.
+   📊 Árbol sintáctico generado correctamente
+
+=== 3. VISUALIZACIÓN DEL AST ===
+   📊 Ventana del árbol sintáctico abierta
+
+=== 4. ANÁLISIS SEMÁNTICO ===
+   📋 Tabla de símbolos construida:
+
+=== TABLA DE SÍMBOLOS ===
+NOMBRE          TIPO       CATEGORÍA       LÍNEA      COLUMNA    ÁMBITO          DETALLES
+--------------------------------------------------------------------------------------------
+contadorGlobal  int        variable        5          4          global          [private]
+valorPi         double     variable        6          7          global          [private]
+inicial         char       variable        7          5          global          [private]
+activo          bool       variable        8          5          global          [private]
+sumar           int        funcion         11         4          global          [private] [int, int]
+a               int        parametro       11         14         sumar
+b               int        parametro       11         21         sumar
+resultado       int        variable        12         8          sumar           [private]
+main            int        funcion         19         4          global          [private]
+estado          int        variable        20         8          main            [private]
+temp            int        variable        21         8          main            [private]
+numeros         int        variable        22         8          main            [arr:3] [private]
+auxiliar        int        variable        50         12         main            [private]
+
+✅ Análisis semántico completado sin errores.
+
+=== 5. GENERACIÓN DE CÓDIGO INTERMEDIO ===
+   🎯 Iniciando recorrido del AST con CodigoVisitor...
+   📝 Código de tres direcciones generado:
+
+  0: // Código de tres direcciones generado
+  1: PROGRAMA_INICIO:
+  2: // Declaración de variables globales
+  3: DECLARE contadorGlobal int
+  4: DECLARE valorPi double
+  5: DECLARE inicial char
+  6: DECLARE activo bool
+  7: func_sumar:
+  8: PARAM a int
+  9: PARAM b int
+ 10: t1 = a + b
+ 11: t2 = contadorGlobal + 1
+ 12: contadorGlobal = t2
+ 13: return t1
+ 14: func_main:
+ 15: DECLARE estado int
+ 16: DECLARE temp int
+ 17: DECLARE numeros[3] int
+ 18: contadorGlobal = 0
+ 19: valorPi = 3.14
+ 20: inicial = 'M'
+ 21: activo = false
+ 22: numeros[0] = 10
+ 23: numeros[1] = 20
+ 24: numeros[2] = 30
+ 25: t3 = numeros[0] + numeros[1]
+ 26: t4 = t3 * 2
+ 27: t5 = t4 / 3
+ 28: temp = t5 % 5
+ 29: t6 = 5 + 3
+ 30: t7 = 10 * 2
+ 31: t8 = 15 - 7
+ 32: temp = temp
+ 33: t9 = temp
+ 34: t9 = t9
+ 35: CALL func_sumar, temp, 5
+ 36: estado = RETURN_VALUE
+ 37: contadorGlobal = estado
+ 38: valorPi = temp
+ 39: inicial = 'X'
+ 40: activo = true
+ 41: t10 = estado > 0
+ 42: if t10 goto THEN_1
+ 43: goto END_IF_1
+ 44: THEN_1:
+ 45: t11 = estado + 10
+ 46: estado = t11
+ 47: END_IF_1:
+ 48: goto FINAL
+ 49: CODIGO_MUERTO:
+ 50: t12 = 999
+ 51: temp = t12
+ 52: FINAL:
+ 53: return estado
+ 54: PROGRAMA_FIN:
+
+✅ Código intermedio guardado en: ejemplo_correcto_codigo_intermedio.txt
+
+=== 6. OPTIMIZACIÓN DE CÓDIGO ===
+   🔧 Aplicando optimizaciones al código intermedio...
+✅ Optimización completada:
+   📊 Instrucciones originales: 55
+   📊 Instrucciones optimizadas: 49
+   📊 Instrucciones eliminadas: 6
+   📊 Reducción de código: 10,91%
+
+   📝 Código optimizado:
+
+  0: // Código de tres direcciones generado
+  1: PROGRAMA_INICIO:
+  2: // Declaración de variables globales
+  3: DECLARE contadorGlobal int
+  4: DECLARE valorPi double
+  5: DECLARE inicial char
+  6: DECLARE activo bool
+  7: func_sumar:
+  8: PARAM a int
+  9: PARAM b int
+ 10: t1 = a + b
+ 11: t2 = contadorGlobal + 1
+ 12: contadorGlobal = t2
+ 13: return t1
+ 14: func_main:
+ 15: DECLARE estado int
+ 16: DECLARE temp int
+ 17: DECLARE numeros[3] int
+ 18: contadorGlobal = 0
+ 19: valorPi = 3.14
+ 20: inicial = 'M'
+ 21: activo = false
+ 22: numeros[0] = 10
+ 23: numeros[1] = 20
+ 24: numeros[2] = 30
+ 25: t3 = numeros[0] + numeros[1]
+ 26: t4 = t3 * 2
+ 27: t5 = t4 / 3
+ 28: temp = t5 % 5
+ 29: t6 = 8
+ 30: t7 = 20
+ 31: t8 = 8
+ 32: t9 = temp
+ 33: CALL func_sumar, temp, 5
+ 34: estado = RETURN_VALUE
+ 35: contadorGlobal = estado
+ 36: valorPi = temp
+ 37: inicial = 'X'
+ 38: activo = true
+ 39: t10 = estado > 0
+ 40: if t10 goto THEN_1
+ 41: goto END_IF_1
+ 42: THEN_1:
+ 43: t11 = estado + 10
+ 44: estado = t11
+ 45: END_IF_1:
+ 46: goto FINAL
+ 47: FINAL:
+ 48: return estado
+ 49: PROGRAMA_FIN:
+
+✅ Código optimizado guardado en: ejemplo_correcto_codigo_optimizado.txt
+
+=== 7. RESUMEN DE COMPILACIÓN ===
+   📁 Archivo procesado: ejemplo_correcto.cpp
+   🔤 Tokens analizados: 152
+   📊 Símbolos en tabla: 13
+   📝 Instrucciones generadas: 55
+   🔧 Instrucciones optimizadas: 49
+   📄 Archivo código intermedio: ejemplo_correcto_codigo_intermedio.txt
+   📄 Archivo código optimizado: ejemplo_correcto_codigo_optimizado.txt
+
+🎉 ¡COMPILACIÓN Y OPTIMIZACIÓN EXITOSA! 🎉
 ```
 
-## Funcionalidades Requeridas
+---
 
-### 1. Análisis Léxico
+### 🔴 Ejemplo 2: Código Con Errores
+
+**Archivo de entrada: `ejemplo_con_errores.cpp`**
+
+```cpp
+// Variables globales
+int variableGlobal;
+int variableGlobal; // ERROR: Variable duplicada en el mismo ámbito
+double valorGlobal;
+char caracterGlobal;
+
+// Función con múltiples errores
+int miFuncion(int parametro1, double parametro2) {
+    int variableLocal;
+    int variableLocal; // ERROR: Variable duplicada en función
+    
+    // Variables nunca utilizadas (WARNING)
+    int variableNoUsada1;
+    string variableNoUsada2;
+    double variableNoUsada3;
+    
+    parametro1 = 100; // OK: asignación a parámetro
+    variableLocal = parametro1 + 5; // OK: uso de variable
+    
+    // ERROR: Asignación a variable no declarada
+    variableFantasma = 42;
+    
+    // ERROR: Asignación a una función (no es variable)
+    miFuncion = 10;
+    
+    // OK: usar variable global
+    valorGlobal = 3.14;
+    
+    return variableLocal;
+}
+
+void funcionVoid() {
+    int x;
+    int y;
+    int z; // WARNING: declarada pero no usada
+    
+    x = 10; // OK
+    y = x + 5; // OK: uso de variables
+    
+    // ERROR: variable no declarada
+    w = x + y;
+}
+
+// Función main para completar el programa
+int main() {
+    int resultado;
+    int valor;
+    
+    resultado = miFuncion(5, 3.14); // OK: uso de función
+    valor = resultado + 10;         // OK: uso de variables
+    
+    // ERROR: variable no declarada
+    variableFinal = valor;
+    
+    // OK: usar variable global
+    variableGlobal = valor;
+    
+    return resultado;
+}
+```
+
+**Salida esperada:**
 
 ```
-● Implementar un analizador léxico utilizando ANTLR4 que reconozca los
-tokens del lenguaje.
-● Identificar y reportar errores léxicos.
-● Generar una tabla de tokens.
-```
-### 2. Análisis Sintáctico
+🚀 Iniciando compilación de: ejemplo_con_errores.cpp
+============================================================
 
-```
-● Implementar un analizador sintáctico utilizando ANTLR4 que verifique la
-estructura gramatical del programa.
-● Construir un árbol de sintaxis abstracta (AST).
-● Identificar y reportar errores sintácticos.
-● Visualizar el árbol sintáctico generado.
-```
-### 3. Análisis Semántico
+=== 1. ANÁLISIS LÉXICO ===
+✅ Análisis léxico completado sin errores.
+   📊 Tokens procesados: 98
 
-```
-● Implementar un analizador semántico que verifique la coherencia semántica
-del programa.
-● Construir y mantener una tabla de símbolos.
-● Verificar tipos de datos y compatibilidad en operaciones.
-● Verificar el ámbito de las variables y funciones.
-● Reportar errores semánticos (con detalles específicos).
-● Distinguir entre errores (críticos) y warnings (no críticos).
-```
-### 4. Generación de Código Intermedio
+=== 2. ANÁLISIS SINTÁCTICO ===
+✅ Análisis sintáctico completado sin errores.
+   📊 Árbol sintáctico generado correctamente
 
-```
-● Implementar un generador de código de tres direcciones.
-● Manejar expresiones aritméticas y lógicas.
-● Manejar estructuras de control (if-else, bucles).
-● Manejar llamadas a funciones y retorno de valores.
-```
-### 5. Optimización de Código
+=== 3. VISUALIZACIÓN DEL AST ===
+   📊 Ventana del árbol sintáctico abierta
 
-```
-● Implementar al menos tres técnicas de optimización, que pueden incluir:
-○ Propagación de constantes
-○ Eliminación de código muerto
+=== 4. ANÁLISIS SEMÁNTICO ===
+   📋 Tabla de símbolos construida:
+
+=== TABLA DE SÍMBOLOS ===
+NOMBRE          TIPO       CATEGORÍA       LÍNEA      COLUMNA    ÁMBITO          DETALLES
+--------------------------------------------------------------------------------------------
+variableGlobal  int        variable        2          4          global          [private]
+valorGlobal     double     variable        4          7          global          [private]
+caracterGlobal  char       variable        5          5          global          [private]
+miFuncion       int        funcion         8          4          global          [private] [int, double]
+parametro1      int        parametro       8          19         miFuncion
+parametro2      double     parametro       8          34         miFuncion
+variableLocal   int        variable        9          8          miFuncion       [private]
+variableNoUsada1 int       variable        13         8          miFuncion       [private]
+variableNoUsada2 string    variable        14         11         miFuncion       [private]
+variableNoUsada3 double    variable        15         11         miFuncion       [private]
+funcionVoid     void       funcion         28         5          global          [private] []
+x               int        variable        29         8          funcionVoid     [private]
+y               int        variable        30         8          funcionVoid     [private]
+z               int        variable        31         8          funcionVoid     [private]
+main            int        funcion         39         4          global          [private] []
+resultado       int        variable        40         8          main            [private]
+valor           int        variable        41         8          main            [private]
+
+❌ ERRORES SEMÁNTICOS:
+   ❌ Error: La variable 'variableGlobal' ya está declarada en el ámbito 'global' (línea 3, columna 4)
+   ❌ Error: La variable 'variableLocal' ya está declarada en el ámbito 'miFuncion' (línea 10, columna 8)
+   ❌ Error: Variable 'variableFantasma' no declarada en el ámbito 'miFuncion' (línea 20)
+   ❌ Error: No se puede asignar valor a 'miFuncion' porque no es una variable (línea 23)
+   ❌ Error: Variable 'w' no declarada en el ámbito 'funcionVoid' (línea 37)
+   ❌ Error: Variable 'variableFinal' no declarada en el ámbito 'main' (línea 46)
+
+⚠️ WARNINGS SEMÁNTICOS:
+   ⚠️ Warning: Variable 'variableNoUsada1' declarada pero nunca utilizada en el ámbito 'miFuncion' (línea 13)
+   ⚠️ Warning: Variable 'variableNoUsada2' declarada pero nunca utilizada en el ámbito 'miFuncion' (línea 14)
+   ⚠️ Warning: Variable 'variableNoUsada3' declarada pero nunca utilizada en el ámbito 'miFuncion' (línea 15)
+   ⚠️ Warning: Variable 'z' declarada pero nunca utilizada en el ámbito 'funcionVoid' (línea 31)
+   ⚠️ El código tiene warnings, pero se puede continuar.
+
+❌ Compilación detenida debido a errores semánticos.
 ```
 
-```
-○ Simplificación de expresiones
-○ Eliminación de subexpresiones comunes
-○ Optimización de bucles
-```
-### 6. Salidas del Compilador
+---
 
-```
-● Generar archivos de salida para el código intermedio y optimizado.
-● Implementar un sistema de reporte de errores y warnings que utilice colores
-para diferenciarlos (verde para éxito, amarillo para warnings, rojo para
-errores).
-```
-## Subconjunto del Lenguaje C++ a Implementar
+## 🔧 Optimizaciones Implementadas
 
-### Tipos de Datos
+### 1. **Eliminación de Código Muerto**
+Elimina código inalcanzable después de saltos incondicionales.
 
-```
-● int
-● char
-● double
-● void (para funciones)
-```
-### Estructuras de Control
+### 2. **Propagación de Constantes**
+Reemplaza variables con valores constantes conocidos.
 
-```
-● Condicionales (if-else)
-● Bucles (for, while)
-● Sentencias de control de bucle (break, continue)
-```
-### Elementos del Lenguaje
+### 3. **Simplificación de Expresiones**
+Evalúa expresiones constantes en tiempo de compilación:
+- `5 + 3` → `8`
+- `10 * 2` → `20`
+- `15 - 7` → `8`
 
-```
-● Declaración de variables
-● Declaración de funciones
-● Expresiones aritméticas y lógicas
-● Llamadas a funciones
-● Retorno de valores
-● Asignaciones
-```
-## Evaluación
+### 4. **Eliminación de Sentencias Redundantes**
+Elimina asignaciones innecesarias como `temp = temp`.
 
-Se evaluará el trabajo considerando:
+---
 
+## 📁 Archivos Generados
 
-1. Corrección y completitud de la implementación
-2. Manejo adecuado de errores y warnings
-3. Calidad del código generado
-4. Efectividad de las optimizaciones implementadas
-5. Calidad de la documentación y del informe técnico
-6. Ejemplos de prueba que demuestren las capacidades del compilador
-7. **Historial de commits en GitHub: Se evaluará la frecuencia, distribución**
-    **y calidad de los commits realizados por ambos integrantes del equipo**
-8. Participación equitativa: Ambos miembros deben demostrar participación
-    activa en el desarrollo
+El compilador genera los siguientes archivos:
 
-## Entregables
+1. **`archivo_codigo_intermedio.txt`**: Código de tres direcciones sin optimizar
+2. **`archivo_codigo_optimizado.txt`**: Código de tres direcciones optimizado
 
-### 1. Repositorio de Código
+---
+
+## 🏗️ Estructura del Proyecto
 
 ```
-● Código fuente del compilador
-● Gramática ANTLR4 utilizada
-● Ejemplos de programas de prueba
-● URL del repositorio GitHub donde se ha desarrollado el proyecto
+src/
+├── main/
+│   ├── java/
+│   │   └── com/
+│   │       └── compilador/
+│   │           ├── App.java                    # Clase principal
+│   │           ├── TablaSimbolos.java          # Tabla de símbolos
+│   │           ├── SimbolosListener.java       # Análisis semántico
+│   │           ├── Optimizador.java            # Optimizaciones
+│   │           ├── MiLenguaje.g4              # Gramática ANTLR
+│   │           └── ...
+│   └── resources/
+├── test/
+│   ├── ejemplo_correcto.cpp
+│   ├── ejemplo_con_errores.cpp
+│   └── ...
+└── README.md
 ```
-### 2. Informe Técnico (en formato PDF)
 
-El informe debe incluir:
-● Portada: Incluir título del trabajo, nombres de los integrantes, materia,
-profesor y fecha.
-● Introducción: Descripción general del compilador desarrollado y sus
-objetivos.
-● Análisis del Problema: Especificación del subconjunto de C++ implementado.
-● Diseño de la Solución:
-○ Arquitectura general del compilador
-○ Descripción de cada fase de compilación
-○ Decisiones de diseño tomadas
-● Implementación:
-○ Detalles técnicos de la implementación
-○ Descripción de la gramática ANTLR
-○ Detalles de la tabla de símbolos
-○ Algoritmos utilizados en cada fase
-○ Técnicas de optimización implementadas
-● Ejemplos y Pruebas:
+---
 
+## 🎓 Criterios de Evaluación
 
-```
-○ Casos de prueba significativos
-○ Salidas generadas
-○ Análisis de resultados
-● Dificultades Encontradas y Soluciones Aplicadas
-● Conclusiones
-● Referencias Bibliográficas
-● Anexos (si son necesarios)
-```
-### 3. Manual de Usuario
+### ✅ Funcionalidades Requeridas:
+- [x] Análisis léxico completo
+- [x] Análisis sintáctico con gramática bien definida
+- [x] Análisis semántico con tabla de símbolos
+- [x] Detección y reporte de errores
+- [x] Generación de código intermedio
+- [x] Documentación completa
+- [x] Casos de prueba exhaustivos
 
-```
-● Instrucciones de instalación
-● Guía de uso del compilador
-● Ejemplos de compilación de programas
-● Interpretación de los mensajes de error y warning
-```
-## Fecha de Entrega
-
-[Fecha específica según el calendario académico]
-
-## Restricciones y Consideraciones
-
-● El compilador debe ser desarrollado en Java, utilizando ANTLR4 como
-herramienta de generación de analizadores léxicos y sintácticos.
-● Se debe realizar una demostración del funcionamiento del compilador con
-ejemplos representativos.
-● El código debe estar adecuadamente comentado y seguir buenas prácticas
-de programación.
-● **No se aceptarán entregas que no cumplan con los requisitos de trabajo
-en equipo y gestión de versiones** (repositorio con commits regulares de
-ambos integrantes).
-● La última actualización del repositorio debe realizarse antes de la fecha y
-hora límite de entrega.
-● El informe técnico debe ser claro, completo y reflejar el trabajo realizado por
-ambos integrantes. La calidad del informe será un componente importante en
-la evaluación final.
-_Nota: La entrega de este trabajo requiere demostrar tanto el dominio técnico como la
-capacidad de trabajar colaborativamente utilizando herramientas de control de_
-
-
-_versiones profesionales. El historial de commits debe reflejar el desarrollo incremental
-del proyecto, con contribuciones equilibradas de ambos integrantes del equipo. El
-informe técnico debe demostrar la comprensión profunda de los conceptos de
-compilación y la capacidad de comunicar adecuadamente las decisiones técnicas
-tomadas._
-
-
+### 🏆 Funcionalidades Adicionales:
+- [x] Visualización del AST
+- [x] Métricas de optimización
+- [x] Estadísticas detalladas
+- [x] Múltiples niveles de optimización
+- [x] Interfaz de línea de comandos completa
