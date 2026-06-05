@@ -1,0 +1,27 @@
+# Compilados y empaquetados de Java
+target/
+*.class
+*.jar
+*.war
+*.ear
+
+# Configuración de IDEs
+.vscode/
+.idea/
+*.iml
+*.ipr
+*.iws
+.settings/
+.classpath
+.project
+.metadata/
+
+# Temporales y logs
+*.log
+tmp/
+temp/
+bin/
+
+# Archivos de salida de ejemplo del compilador (opcional, pero se pueden ignorar si se desea)
+# *_codigo_intermedio.txt
+# *_codigo_optimizado.txt

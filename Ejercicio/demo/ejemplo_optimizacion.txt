@@ -1,0 +1,14 @@
+int main() {
+    int x;
+    int y;
+    int z;
+    int dead;
+
+    x = 5 + 3; // Should be folded to x = 8
+    y = x * 1; // Should be simplified to y = x
+    z = y + 0; // Should be simplified to z = y
+    
+    return z;
+
+    dead = 999; // Dead code, should be removed
+}

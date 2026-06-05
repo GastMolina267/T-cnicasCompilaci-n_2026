@@ -1,0 +1,12 @@
+  0: // Código de tres direcciones generado
+  1: PROGRAMA_INICIO:
+  2: func_main:
+  3: DECLARE x int
+  4: DECLARE y int
+  5: DECLARE z int
+  6: DECLARE dead int
+  7: x = 8
+  8: y = 8
+  9: z = 8
+  10: return 8
+  11: PROGRAMA_FIN:

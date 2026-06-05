@@ -1,0 +1,21 @@
+int variableGlobal;
+int variableGlobal; // ERROR: duplicate global variable
+
+int miFuncion(int a) {
+    int local1;
+    int local1; // ERROR: duplicate local variable
+    
+    int noUsada; // WARNING: declared but not used
+
+    double d;
+    d = 10; // OK
+    
+    // ERROR: Type mismatch in assignment
+    // (since we don't have boolean variables yet, let's use void or string)
+    // Actually, void cannot be assigned to double
+    
+    // ERROR: Undeclared variable
+    fantasma = 42; 
+    
+    return local1;
+}
