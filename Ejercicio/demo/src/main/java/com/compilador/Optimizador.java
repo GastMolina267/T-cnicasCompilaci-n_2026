@@ -229,6 +229,14 @@ public class Optimizador {
                         propagated.setOp("=");
                         propagated.setArg1("0");
                         propagated.setArg2("");
+                    } else if (arg1.equals("2")) {
+                        propagated.setOp("+");
+                        propagated.setArg1(arg2);
+                        propagated.setArg2(arg2);
+                    } else if (arg2.equals("2")) {
+                        propagated.setOp("+");
+                        propagated.setArg1(arg1);
+                        propagated.setArg2(arg1);
                     }
                 }
             }
