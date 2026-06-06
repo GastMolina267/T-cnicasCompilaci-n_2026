@@ -154,6 +154,8 @@ BOOL    : 'bool' ;
 
 RETURN : 'return';
 
+CASA : 'casa';
+
 ID : (LETRA | '_') (LETRA | DIGITO | '_')*;
 
 INTEGER : DIGITO+;

@@ -27,7 +27,7 @@
   26: t4 = numeros[1]
   27: t5 = t3 + t4
   28: temp = t5
-  29: t6 = temp * 2
+  29: t6 = temp + temp
   30: temp = t6
   31: t7 = temp / 3
   32: temp = t7
